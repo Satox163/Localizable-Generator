@@ -40,8 +40,5 @@ func parser(_ csv: String) -> Result<[String: [LocalizedModel]], Error> {
                 localizables[String(lang)]?.append(model)
             }
     }
-    localizables.forEach { (key: String, value: [LocalizedModel]) in
-        print("\(key.uppercased()), value \(value)")
-    }
     return .success(localizables)
 }
