@@ -7,7 +7,7 @@ let package = Package(
     name: "LocalizableGenerator",
     defaultLocalization: "en",
     platforms: [
-        .macOS(.v10_13)
+        .macOS(.v12)
     ],
     products: [
        .executable(name: "lgenerator", targets: ["LocalizableGenerator"])

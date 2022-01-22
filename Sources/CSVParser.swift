@@ -9,11 +9,11 @@ enum ParseError: Error {
     case failParse
 }
 
-func parser(_ csv: String) -> Result<[String: [LocalizedModel]], Error> {
+func parser(_ csv: String) throws -> [String: [LocalizedModel]] {
     let rows = csv.split(separator: "\r\n")
     guard rows.isEmpty == false,
     let firstRow = rows.first else {
-        return .failure(ParseError.failParse)
+        throw ParseError.failParse
     }
     let languages = firstRow
         .split(separator: ",")
@@ -21,7 +21,7 @@ func parser(_ csv: String) -> Result<[String: [LocalizedModel]], Error> {
         .dropFirst()
     
     guard languages.isEmpty == false else {
-        return .failure(ParseError.failParse)
+        throw ParseError.failParse
     }
     var localizables = [String: [LocalizedModel]]()
     localizables.reserveCapacity(rows.count - 1)
@@ -56,5 +56,5 @@ func parser(_ csv: String) -> Result<[String: [LocalizedModel]], Error> {
                 }
             }
     }
-    return .success(localizables)
+    return localizables
 }

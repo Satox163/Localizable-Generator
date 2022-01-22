@@ -10,25 +10,41 @@ func exitFailure() {
     exit(EXIT_FAILURE)
 }
 
-struct Main: ParsableCommand {
-    @Argument(help: "file name")
-    var fileName: String
+actor Main: ParsableCommand {
+    @Option(help: "source file path")
+    var sourceFilePath: String?
+    
+    @Option(help: "source file path")
+    var sourceFileURL: String?
     
     @Argument(help: "output path")
     var outputPath: String
     
-    mutating func run() throws {
-        print(fileName)
-        print(outputPath)
-        let path = (Path.current + Path(fileName))
-        do {
-            let csvString: String = try path.read()
-            let data = try parser(csvString).get()
-            try fileGenerator(outputPath: outputPath, data: data)
-            exitSuccess()
-        } catch {
-            print(error)
-            exitFailure()
+    nonisolated func run() throws {
+        Task {
+            func csvString(sourceFilePath: String?, sourceFileURL: String?) async throws -> String {
+                if let sourceFilePath = sourceFilePath {
+                    let path = (Path.current + Path(sourceFilePath))
+                    return try path.read()
+                }
+                if let sourceFileURL = sourceFileURL,
+                   let url = URL(string: sourceFileURL) {
+                    return try await download(url: url)
+                }
+                return ""
+            }
+            do {
+                let content = try await csvString(
+                    sourceFilePath: sourceFilePath,
+                    sourceFileURL: sourceFileURL
+                )
+                let data = try parser(content)
+                try await fileGenerator(outputPath: outputPath, data: data)
+                exitSuccess()
+            } catch {
+                print(error)
+                exitFailure()
+            }
         }
         dispatchMain()
     }
