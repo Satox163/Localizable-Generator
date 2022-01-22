@@ -5,6 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "LocalizableGenerator",
+    defaultLocalization: "en",
     platforms: [
         .macOS(.v10_13)
     ],
@@ -22,7 +23,9 @@ let package = Package(
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 .product(name: "PathKit", package: "PathKit"),
-            ]
+            ],
+            path: "Sources/..",
+            exclude: ["README.md"]
         )
     ]
 )
