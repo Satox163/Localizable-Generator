@@ -1,5 +1,6 @@
 import ArgumentParser
 import Foundation
+import PathKit
 
 func exitSuccess() {
     exit(EXIT_SUCCESS)
@@ -10,24 +11,18 @@ func exitFailure() {
 }
 
 struct Main: ParsableCommand {
-    @Argument(help: "google sheet url")
-    var url: String
+    @Argument(help: "file name")
+    var fileName: String
     
     mutating func run() throws {
-        guard let url = URL(string: url) else {
+        let path = (Path.current + Path(fileName))
+        do {
+            let csvString: String = try path.read()
+            let data = try parser(csvString).get()
+            try fileGenerator(data: data)
+            exitSuccess()
+        } catch {
             exitFailure()
-            return
-        }
-        download(url: url) { response in
-            do {
-                let csvString = try response.get()
-                let data = try parser(csvString).get()
-                try fileGenerator(data: data)
-                exitSuccess()
-            } catch {
-                print(error)
-                exitFailure()
-            }
         }
         dispatchMain()
     }

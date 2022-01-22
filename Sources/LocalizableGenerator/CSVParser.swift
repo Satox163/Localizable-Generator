@@ -18,6 +18,8 @@ func parser(_ csv: String) -> Result<[String: [LocalizedModel]], Error> {
     let languages = firstRow
         .split(separator: ",")
         .filter { $0.contains("ios") == false }
+        .dropFirst()
+    
     guard languages.isEmpty == false else {
         return .failure(ParseError.failParse)
     }
@@ -25,7 +27,7 @@ func parser(_ csv: String) -> Result<[String: [LocalizedModel]], Error> {
     localizables.reserveCapacity(rows.count - 1)
     
     languages.forEach { subs in
-        localizables[String(subs)] = []
+        localizables[String(subs.lowercased())] = []
     }
     rows[1...].forEach { subs in
         let row = subs.enumerated().split { (index, character) in

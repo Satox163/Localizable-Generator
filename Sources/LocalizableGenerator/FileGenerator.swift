@@ -1,7 +1,9 @@
 import Foundation
 
 func fileGenerator(data: [String: [LocalizedModel]]) throws {
+    
     let fileManager = FileManager.default
+    
     try data.forEach { (key: String, value: [LocalizedModel]) throws in
         let localizabeText = value
             .map { model in
