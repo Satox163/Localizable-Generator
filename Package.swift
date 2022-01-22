@@ -5,10 +5,13 @@ import PackageDescription
 
 let package = Package(
     name: "LocalizableGenerator",
+    platforms: [
+        .macOS(.v10_13)
+    ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.0.0"),
         .package(url: "https://github.com/kylef/PathKit.git", from: "1.0.1"),
-
+        
     ],
     targets: [
         .executableTarget(
