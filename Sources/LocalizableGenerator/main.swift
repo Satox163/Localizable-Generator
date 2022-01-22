@@ -14,14 +14,20 @@ struct Main: ParsableCommand {
     @Argument(help: "file name")
     var fileName: String
     
+    @Argument(help: "output path")
+    var outputPath: String
+    
     mutating func run() throws {
+        print(fileName)
+        print(outputPath)
         let path = (Path.current + Path(fileName))
         do {
             let csvString: String = try path.read()
             let data = try parser(csvString).get()
-            try fileGenerator(data: data)
+            try fileGenerator(outputPath: outputPath, data: data)
             exitSuccess()
         } catch {
+            print(error)
             exitFailure()
         }
         dispatchMain()

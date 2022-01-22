@@ -52,7 +52,7 @@ func parser(_ csv: String) -> Result<[String: [LocalizedModel]], Error> {
                 let valueIndex = index + 1
                 if row.indices.contains(valueIndex) {
                     let model = LocalizedModel(key: String(key), value: String(row[valueIndex]))
-                    localizables[String(lang)]?.append(model)
+                    localizables[String(lang).lowercased()]?.append(model)
                 }
             }
     }

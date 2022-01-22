@@ -1,16 +1,18 @@
 import Foundation
 
-func fileGenerator(data: [String: [LocalizedModel]]) throws {
+func fileGenerator(
+    outputPath: String,
+    data: [String: [LocalizedModel]]
+) throws {
     
     let fileManager = FileManager.default
-    
     try data.forEach { (key: String, value: [LocalizedModel]) throws in
         let localizabeText = value
             .map { model in
                 "\"\(model.key)\"" + " = " + "\"\(model.value)\";"
             }
             .joined(separator: "\n")
-        let directoryPath = "\(fileManager.currentDirectoryPath)/\(key).lproj"
+        let directoryPath = "\(outputPath)/\(key).lproj"
         var isDir: ObjCBool = true
         if fileManager.fileExists(atPath: directoryPath, isDirectory: &isDir) {
             try fileManager.removeItem(atPath: directoryPath)
@@ -26,5 +28,6 @@ func fileGenerator(data: [String: [LocalizedModel]]) throws {
             contents: localizabeText.data(using: .utf8),
             attributes: [:]
         )
+        print(filePath)
     }
 }
