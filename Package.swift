@@ -8,6 +8,9 @@ let package = Package(
     platforms: [
         .macOS(.v10_13)
     ],
+    products: [
+       .executable(name: "lgenerator", targets: ["LocalizableGenerator"])
+     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.0.0"),
         .package(url: "https://github.com/kylef/PathKit.git", from: "1.0.1"),
