@@ -29,9 +29,19 @@ func xlsParser(_ filePath: String) throws -> [String: [LocalizedModel]] {
         .data?
         .rows[1...]
         .forEach { row in
-            let result = row.cells.map {
-                $0.stringValue(sharedStrings)
+            let result: [String?] = row.cells.map {
+                if let value = $0.stringValue(sharedStrings) {
+                    return value
+                }
+                let richString = $0.richStringValue(sharedStrings)
+                if richString.isEmpty == false {
+                    return richString.reduce("") { partialResult, rich in
+                        return partialResult + (rich.text ?? "")
+                    }
+                }
+                return nil
             }
+
             guard let key = result.first as? String,
                   result.isEmpty == false else { return }
 
