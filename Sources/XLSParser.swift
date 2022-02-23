@@ -1,6 +1,11 @@
 import Foundation
 import CoreXLSX
 
+struct LocalizedModel {
+    let key: String
+    let value: String
+}
+
 func xlsParser(_ filePath: String) throws -> [String: [LocalizedModel]] {
     guard let file = XLSXFile(filepath: filePath),
           let firstWbk = (try file.parseWorkbooks()).first,
