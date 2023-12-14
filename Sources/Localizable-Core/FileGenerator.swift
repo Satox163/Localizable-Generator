@@ -1,6 +1,6 @@
 import Foundation
 
-func fileGenerator(
+public func fileGenerator(
     outputPath: String,
     data: [String: [LocalizedModel]]
 ) throws {

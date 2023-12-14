@@ -1,7 +1,7 @@
 import ArgumentParser
 import Foundation
 import PathKit
-
+import Localizable_Core
 
 func exitSuccess() {
     exit(EXIT_SUCCESS)
